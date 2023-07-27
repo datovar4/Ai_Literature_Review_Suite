@@ -19,6 +19,8 @@
     7. If using a Mac M1 computer, type: pip install -r requirements_mac.txt
     8. Install your favorite python interpreter. Example: conda install spyder
 4. Launch Python interpreter in terminal, in this case Spyder
+<img width="757" alt="Screen Shot 2023-07-27 at 11 06 48 AM" src="https://github.com/datovar4/Ai_Literature_Review_Suite/assets/24495304/ed580c8c-859b-4a08-b606-b4d5a320e05b">
+
 5. Navigate to MainGUI and press run. A GUI will pop up and you are ready to select one of the different modules
    
 ![Screen Shot 2023-07-26 at 5 22 30 PM](https://github.com/datovar4/Ai_Literature_Review_Suite/assets/24495304/937a7c68-a961-4184-9181-f5e8eb16112e)
