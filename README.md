@@ -15,8 +15,8 @@
     3. In terminal type: conda create --name AILitReview
     4. In terminal type: conda activate AILitReview
     5. In terminal type: conda install pip
-    6. If using a Windows computer, type: pip install -r requirements_win.txt
-    7. If using a Mac computer, type: pip install -r requirements_mac.txt
+    6. If using a Windows or Mac Intel computer, type: pip install -r requirements_win.txt
+    7. If using a Mac M1 computer, type: pip install -r requirements_mac.txt
     8. Install your favorite python interpreter. Example: conda install spyder
 4. Launch Python interpreter in terminal, in this case Spyder
 5. Navigate to MainGUI and press run. A GUI will pop up and you are ready to select one of the different modules
