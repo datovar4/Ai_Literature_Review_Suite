@@ -11,6 +11,8 @@
 3. Set up Conda environment (for someone who does not have Conda installed)
     1. Visit the Miniconda download page at https://docs.conda.io/en/latest/miniconda.html Choose the installer that matches your operating system and download it.
        For Linux and macOS, you'll need to open a terminal to install it. For Windows, you can just run the .exe file that you downloaded.
+       ![Screen Shot 2023-07-27 at 11 09 01 AM](https://github.com/datovar4/Ai_Literature_Review_Suite/assets/24495304/efb98d07-5417-48fa-b8d9-a654da92d2a1)
+
     2. On Windows, run the installer and follow the prompts. On Linux and macOS, open a terminal and run bash with install file. For example, Miniconda3-latest-MacOSX-x86_64.sh  #macOS
     3. In terminal type: conda create --name AILitReview
     4. In terminal type: conda activate AILitReview
