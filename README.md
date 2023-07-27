@@ -1,7 +1,7 @@
 # Ai_Literature_Review_Suite
 **Getting Started Guide**
 
-1. Register for CORE API (https://core.ac.uk/services/api) and OpenAI API(https://openai.com/blog/openai-api). Functionality for LLaMA2 coming soon!
+1. Register for CORE API (https://core.ac.uk/services/api) and OpenAI API(https://openai.com/blog/openai-api). CORE API is neccessary for PDF search and PDF extraction and Chat GPT is currently used as the main large language model. The AI Literature suite upon first running it will ask you for these APIs and then save them as a file in the folder. Functionality for LLaMA2 coming soon!
 
 ![CORE_API](https://github.com/datovar4/Ai_Literature_Review_Suite/assets/24495304/4b52d7bf-ddab-4b11-8723-c8f5c5c6158d)
 ![OpenAI_Logo svg-2](https://github.com/datovar4/Ai_Literature_Review_Suite/assets/24495304/6f30f35b-ec17-4f2f-b37e-9861ca9f3626)
