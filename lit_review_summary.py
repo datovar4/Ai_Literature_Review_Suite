@@ -85,13 +85,13 @@ class SemanticSearch:
         return embeddings, text_clusters
 
 
-def generate_text(prompt, engine="gpt-3.5-turbo"):
+def generate_text(prompt, engine="gpt-4"):
     max_attempts = 5
     sleep_time = 30  # Number of seconds to wait between attempts
 
     for attempt in range(max_attempts):
         try:
-            if engine == "gpt-3.5-turbo":
+            if engine == "gpt-4":
                 completions = openai.ChatCompletion.create(
                     model=engine,
                     messages=[
@@ -110,7 +110,7 @@ def generate_text(prompt, engine="gpt-3.5-turbo"):
                     stop=None,
                     temperature=0.7,
                 )
-            message = completions.choices[0].text.strip() if engine != "gpt-3.5-turbo" else completions.choices[0].message['content'].strip()
+            message = completions.choices[0].text.strip() if engine != "gpt-4" else completions.choices[0].message['content'].strip()
             return message
 
         except requests.exceptions.RequestException as e:
