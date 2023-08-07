@@ -34,7 +34,7 @@
 
 
 For more information regarding the features, check out the paper: https://arxiv.org/abs/2308.02443 
-If you use the AI Literature Review Suite, please cite this paper:
+If you use the AI Literature Review Suite, please cite it:
 
 Tovar, D. (2023). AI Literature Review Suite. arXiv preprint arXiv:2308.02443.
 
