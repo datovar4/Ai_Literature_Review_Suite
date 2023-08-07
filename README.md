@@ -32,10 +32,10 @@ If you use the AI Literature Review Suite, please cite this paper:
 Tovar, D. (2023). AI Literature Review Suite. arXiv preprint arXiv:2308.02443.
 
 @article{tovar2023AILitSuite,
-   title={AI Literature Review Suite},
-   author={Tovar, David A},
-   journal={arXiv preprint arXiv:2308.02443},
-   year={2023}
+title={AI Literature Review Suite},
+author={Tovar, David A},
+journal={arXiv preprint arXiv:2308.02443},
+year={2023}
 }
 
 
