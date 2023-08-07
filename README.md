@@ -26,3 +26,16 @@
 5. Navigate to MainGUI and press run. A GUI will pop up and you are ready to select one of the different modules
    
 ![Screen Shot 2023-07-26 at 5 22 30 PM](https://github.com/datovar4/Ai_Literature_Review_Suite/assets/24495304/937a7c68-a961-4184-9181-f5e8eb16112e)
+
+If you use the AI Literature Review Suite, please cite this paper:
+
+Tovar, D. (2023). AI Literature Review Suite. arXiv preprint arXiv:2308.02443.
+
+@article{tovar2023AILitSuite,
+   title={AI Literature Review Suite},
+   author={Tovar, David A},
+   journal={arXiv preprint arXiv:2308.02443},
+   year={2023}
+}
+
+
