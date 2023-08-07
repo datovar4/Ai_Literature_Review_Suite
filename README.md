@@ -33,15 +33,10 @@
 ![Screen Shot 2023-07-26 at 5 22 30 PM](https://github.com/datovar4/Ai_Literature_Review_Suite/assets/24495304/25c567bc-1284-422b-8e12-8ab9f351d7a7)
 
 
+For more information regarding the features, check out the paper: https://arxiv.org/abs/2308.02443 
 If you use the AI Literature Review Suite, please cite this paper:
 
 Tovar, D. (2023). AI Literature Review Suite. arXiv preprint arXiv:2308.02443.
 
-@article{tovar2023AILitSuite,
-title={AI Literature Review Suite},
-author={Tovar, David A},
-journal={arXiv preprint arXiv:2308.02443},
-year={2023}
-}
 
 
