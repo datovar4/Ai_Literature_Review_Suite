@@ -1,4 +1,4 @@
-name: pdfchatter
+name: LitReview
 channels:
   - defaults
 dependencies:
