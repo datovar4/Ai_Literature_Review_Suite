@@ -18,13 +18,10 @@
        ![Screen Shot 2023-07-27 at 11 09 01 AM](https://github.com/datovar4/Ai_Literature_Review_Suite/assets/24495304/fc8dbf52-ed70-4c62-bb55-0800b021cae3)
 
     3. On Windows, run the installer and follow the prompts. On Linux and macOS, open a terminal and run bash with install file. For example, Miniconda3-latest-MacOSX-x86_64.sh  #macOS
-    4. In terminal type: conda create --name AILitReview
-    5. In terminal type: conda activate AILitReview
-    6. In terminal type: conda install pip
-    7. If using a Windows or Mac Intel computer, type: pip install -r requirements_win.txt
-    8. If using a Mac M1 computer, type: pip install -r requirements_mac.txt
-    9. Install your favorite python interpreter. Example: conda install spyder
-4. Launch Python interpreter in terminal, in this case Spyder
+    4. mac-In terminal type: conda env create -f lit_environment_mac.yml
+    5. windows-In terminal type: conda env create -f lit_environment_win.yml
+    6. In terminal type: conda activate LitReview
+4. Launch Python interpreter (default Spyder(=) in terminal, in this case Spyder
 <img width="757" alt="Screen Shot 2023-07-27 at 11 06 48 AM" src="https://github.com/datovar4/Ai_Literature_Review_Suite/assets/24495304/67ee3d55-553f-4f9c-83c0-800640d525a4">
 
 
