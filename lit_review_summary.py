@@ -129,7 +129,7 @@ def generate_answer(cluster_texts):
     for c in cluster_texts:
         prompt += c + '\n\n'
 
-    prompt += f"In the above text, {question}. Write your response in a review style for a jounral, citing the entry titles with in text citations from the text above as your source material after each sentence.Be concise limiting your responses to a 150-200 word synthesized paragraph. Make a topic sentence that summarizes the main theme. Do not use the phrase //in this review// . Do not make a reference to the number of articles you are summarizing. Avoid being repetitive "
+    prompt += f"In the above text, {question}. Write your response in a review style for a jounral, citing the entry titles with in text citations from the text above as your source material after each sentence.Be concise limiting your responses to a 150-200 word synthesized paragraph. Make a topic sentence that summarizes the main theme. Do not use the phrase //in this review// . Do not make a reference to the number of articles you are summarizing. Avoid being repetitive. Make sure the review is cohesive with transitions between sections and paragraphs. Do not mention the studies in sentences, only in the citations, instead focus on the ideas, synthesizing across studies. Best sentences are those that appropriately include multiple citations and interspersed throughout the paragraph, with added bonus if multiple citations are within those interspersed sentences. Include title subsections where appropriate. "
     print('Calling GPT4o API')
     answer = generate_text(prompt)
     return answer
