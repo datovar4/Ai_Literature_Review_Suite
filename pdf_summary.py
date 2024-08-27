@@ -132,32 +132,32 @@ def load_recommender(path, start_page=1):
     return 'Corpus Loaded.'
 
 
-def generate_text(prompt, engine="gpt-3.5-turbo"):
+def generate_text(prompt, engine="gpt-4o-mini"):
     max_attempts = 500
     sleep_time = 30 # Number of seconds to wait between attempts
 
     for attempt in range(max_attempts):
         try:
-            if engine == "gpt-3.5-turbo":
+            if engine == "gpt-4o-mini":
                 completions = openai.ChatCompletion.create(
                     model=engine,
                     messages=[
                         {"role": "system", "content": "You are an expert scientific writer who writes review articles for Nature Neuroscience Reviews."},
                         {"role": "user", "content": prompt}
                     ],
-                    max_tokens = 300,
+                    max_tokens =1000,
                     temperature=0.7
                 )
             else:
                 completions = openai.Completion.create(
                     engine=engine,
                     prompt=prompt,
-                    max_tokens=700,
+                    max_tokens=1000,
                     n=1,
                     stop=None,
                     temperature=0.7,
                 )
-            message = completions.choices[0].text.strip() if engine != "gpt-3.5-turbo" else completions.choices[0].message['content'].strip()
+            message = completions.choices[0].text.strip() if engine != "gpt-4o-mini" else completions.choices[0].message['content'].strip()
             return message
 
         except (RateLimitError, OpenAIError) as e:
@@ -183,7 +183,7 @@ def generate_answer(question):
               "If the text does not relate to the query, simply state 'Text Not Found in PDF'. Ignore outlier "\
               "search results which has nothing to do with the question. Only answer what is asked. The "\
               "answer should be short and concise, less than 200 words. Answer step-by-step."
-    print("Calling GPT3 API")
+    print("Calling GPT4 Mini API")
     answer = generate_text(prompt)
     return answer
 
@@ -300,3 +300,4 @@ def process_pdfs(manual_input=False):
 if __name__ == "__main__":
     result = process_pdfs()
     print(f"Resulting file is {result}")
+
