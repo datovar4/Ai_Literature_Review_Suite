@@ -207,8 +207,6 @@ def main(excel_file_path=None):
                     print("All attempts failed. Please check the error messages.")
                     raise e  # If all attempts failed, raise the last exception
 
-    # Rest of the code...
-
 
         # Save clusters in the verbose Word document
         for i, cluster_texts in enumerate(recommender.clusters):
