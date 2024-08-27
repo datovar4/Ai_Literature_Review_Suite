@@ -34,7 +34,7 @@ class SemanticSearch:
         self.use = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
         self.fitted = False
 
-    def fit(self, data, batch=500, n_neighbors=5, entries_per_cluster=4):
+    def fit(self, data, batch=1000, n_neighbors=5, entries_per_cluster=10):
         self.data = data
         self.embeddings, self.clusters = self.get_text_embedding(data, batch=batch, entries_per_cluster=entries_per_cluster)
         n_neighbors = min(n_neighbors, len(self.embeddings))
@@ -53,7 +53,7 @@ class SemanticSearch:
 
     from math import ceil
 
-    def get_text_embedding(self, texts, batch=512, entries_per_cluster=4):
+    def get_text_embedding(self, texts, batch=1000, entries_per_cluster=10):
         embeddings = []
         for i in range(0, len(texts), batch):
             text_batch = texts[i:(i+batch)]
@@ -85,13 +85,13 @@ class SemanticSearch:
         return embeddings, text_clusters
 
 
-def generate_text(prompt, engine="gpt-4"):
+def generate_text(prompt, engine="gpt-4o"):
     max_attempts = 5
     sleep_time = 30  # Number of seconds to wait between attempts
 
     for attempt in range(max_attempts):
         try:
-            if engine == "gpt-4":
+            if engine == "gpt-4o":
                 completions = openai.ChatCompletion.create(
                     model=engine,
                     messages=[
@@ -110,7 +110,7 @@ def generate_text(prompt, engine="gpt-4"):
                     stop=None,
                     temperature=0.7,
                 )
-            message = completions.choices[0].text.strip() if engine != "gpt-4" else completions.choices[0].message['content'].strip()
+            message = completions.choices[0].text.strip() if engine != "gpt-4o" else completions.choices[0].message['content'].strip()
             return message
 
         except requests.exceptions.RequestException as e:
@@ -123,14 +123,14 @@ def generate_text(prompt, engine="gpt-4"):
                 raise e  # If this was not a rate limit error, raise the exception
 
 def generate_answer(cluster_texts):
-    question = "What are the main themes and what are some similarities and differences of the studies? Place some emphasis on main study findings"
+    question = "What are the main themes and what are some similarities and differences of the studies? Place some emphasis on main study findings and methods used as well as model architectures if applicable"
 
     prompt = ""
     for c in cluster_texts:
         prompt += c + '\n\n'
 
     prompt += f"In the above text, {question}. Write your response in a review style for a jounral, citing the entry titles with in text citations from the text above as your source material after each sentence.Be concise limiting your responses to a 150-200 word synthesized paragraph. Make a topic sentence that summarizes the main theme. Do not use the phrase //in this review// . Do not make a reference to the number of articles you are summarizing. Avoid being repetitive "
-    print('Calling GPT3 API')
+    print('Calling GPT4o API')
     answer = generate_text(prompt)
     return answer
 
