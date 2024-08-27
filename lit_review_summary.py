@@ -98,14 +98,14 @@ def generate_text(prompt, engine="gpt-4o"):
                         {"role": "system", "content": "You are an expert scientific writer who writes review articles for Nature Neuroscience Reviews."},
                         {"role": "user", "content": prompt}
                     ],
-                    max_tokens = 300,
+                    max_tokens = 4000,
                     temperature=0.7
                 )
             else:
                 completions = openai.Completion.create(
                     engine=engine,
                     prompt=prompt,
-                    max_tokens=700,
+                    max_tokens=4000,
                     n=1,
                     stop=None,
                     temperature=0.7,
