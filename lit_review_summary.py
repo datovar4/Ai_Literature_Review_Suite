@@ -5,7 +5,7 @@ Created on Sat May 13 19:00:28 2023
 """
 import os
 import openai
-from tkinter import Tk, filedialog
+from tkinter import Tk, filedialog, simpledialog, Label, Entry
 import sys
 import pandas as pd
 from docx import Document
@@ -19,7 +19,6 @@ import requests
 import time
 import argparse
 from api_key_checker import check_api_key
-
 
 # Set your OpenAI API Key here
 check_api_key("OpenAI_API.txt", "OpenAI")
@@ -50,8 +49,6 @@ class SemanticSearch:
             return [self.data[i] for i in neighbors]
         else:
             return neighbors
-
-    from math import ceil
 
     def get_text_embedding(self, texts, batch=1000, entries_per_cluster=10):
         embeddings = []
@@ -85,7 +82,7 @@ class SemanticSearch:
         return embeddings, text_clusters
 
 
-def generate_text(prompt, engine="gpt-4o"):
+def generate_text(prompt, engine="gpt-4o", max_tokens=300):
     max_attempts = 5
     sleep_time = 30  # Number of seconds to wait between attempts
 
@@ -98,14 +95,14 @@ def generate_text(prompt, engine="gpt-4o"):
                         {"role": "system", "content": "You are an expert scientific writer who writes review articles for Nature Neuroscience Reviews."},
                         {"role": "user", "content": prompt}
                     ],
-                    max_tokens = 4000,
+                    max_tokens=max_tokens,
                     temperature=0.7
                 )
             else:
                 completions = openai.Completion.create(
                     engine=engine,
                     prompt=prompt,
-                    max_tokens=4000,
+                    max_tokens=max_tokens,
                     n=1,
                     stop=None,
                     temperature=0.7,
@@ -129,11 +126,38 @@ def generate_answer(cluster_texts):
     for c in cluster_texts:
         prompt += c + '\n\n'
 
-    prompt += f"In the above text, {question}. Write your response in a review style for a jounral, citing the entry titles with in text citations from the text above as your source material after each sentence.Be concise limiting your responses to a 150-200 word synthesized paragraph. Make a topic sentence that summarizes the main theme. Do not use the phrase //in this review// . Do not make a reference to the number of articles you are summarizing. Avoid being repetitive. Make sure the review is cohesive with transitions between sections and paragraphs. Do not mention the studies in sentences, only in the citations, instead focus on the ideas, synthesizing across studies. Best sentences are those that appropriately include multiple citations and interspersed throughout the paragraph, with added bonus if multiple citations are within those interspersed sentences. Include title subsections where appropriate. "
-    print('Calling GPT4o API')
-    answer = generate_text(prompt)
+    prompt += f"In the above text, {question}. Write your response in a review style for a journal, citing the entry titles with in-text citations from the text above as your source material after each sentence.Be concise limiting your responses to a 150-200 word synthesized paragraph. Make a topic sentence that summarizes the main theme. Do not use the phrase 'in this review'. Do not make a reference to the number of articles you are summarizing. Avoid being repetitive."
+    print('Calling GPT4o API for cluster summary')
+    answer = generate_text(prompt, max_tokens=500)  # Increase if needed
     return answer
 
+# Custom dialog class to input topics
+class TopicsDialog(simpledialog.Dialog):
+    def body(self, master):
+        self.title("Input Topics for Literature Review")
+        Label(master, text="Topic 1:").grid(row=0, column=0, sticky='e')
+        Label(master, text="Topic 2:").grid(row=1, column=0, sticky='e')
+        Label(master, text="Topic 3:").grid(row=2, column=0, sticky='e')
+        Label(master, text="Main Topic:").grid(row=3, column=0, sticky='e')
+
+        self.topic1_entry = Entry(master)
+        self.topic2_entry = Entry(master)
+        self.topic3_entry = Entry(master)
+        self.main_topic_entry = Entry(master)
+
+        self.topic1_entry.grid(row=0, column=1)
+        self.topic2_entry.grid(row=1, column=1)
+        self.topic3_entry.grid(row=2, column=1)
+        self.main_topic_entry.grid(row=3, column=1)
+        return self.topic1_entry  # initial focus
+
+    def apply(self):
+        self.result = {
+            'topic1': self.topic1_entry.get(),
+            'topic2': self.topic2_entry.get(),
+            'topic3': self.topic3_entry.get(),
+            'main_topic': self.main_topic_entry.get()
+        }
 
 def main(excel_file_path=None):
     # Get the Excel file path using GUI
@@ -179,7 +203,6 @@ def main(excel_file_path=None):
     entries_per_cluster = 5
     max_attempts = 5
 
-
     # Loop over all dataframes (i.e., all sheets in the Excel file)
     for sheet_name, df in df_dict.items():
         # Fit the recommender to the data
@@ -191,8 +214,10 @@ def main(excel_file_path=None):
                 recommender.fit(data, entries_per_cluster=entries_per_cluster)
     
                 # Generate answers for each cluster of texts
+                answers = []
                 for cluster_texts in recommender.clusters:
                     answer = generate_answer(cluster_texts)
+                    answers.append(answer)
                     document.add_paragraph(answer)
     
                 print(f"Summaries generated from sheet: {sheet_name}")
@@ -201,12 +226,11 @@ def main(excel_file_path=None):
                 print(f"Attempt {attempt + 1} failed: {str(e)}")
                 if attempt + 1 < max_attempts:
                     # Decrease the entries_per_cluster for the next attempt
-                    entries_per_cluster = entries_per_cluster-1
+                    entries_per_cluster = entries_per_cluster - 1
                     print(f"Retrying with smaller cluster size: {entries_per_cluster}")
                 else:
                     print("All attempts failed. Please check the error messages.")
                     raise e  # If all attempts failed, raise the last exception
-
 
         # Save clusters in the verbose Word document
         for i, cluster_texts in enumerate(recommender.clusters):
@@ -214,8 +238,37 @@ def main(excel_file_path=None):
             for text in cluster_texts:
                 verbose_document.add_paragraph(text)
             verbose_document.add_paragraph()
-
+    
         print(f"Clusters generated from sheet: {sheet_name}")
+
+        # After generating the summaries, prompt the user for topics
+        # Use the custom dialog
+        root.deiconify()  # Show the root window
+        topics_dialog = TopicsDialog(root)
+        root.withdraw()  # Hide the root window again
+
+        if topics_dialog.result is None:
+            print("No topics entered. Exiting.")
+            sys.exit(1)
+        else:
+            topic1 = topics_dialog.result['topic1']
+            topic2 = topics_dialog.result['topic2']
+            topic3 = topics_dialog.result['topic3']
+            main_topic = topics_dialog.result['main_topic']
+
+        # Prepare the combined summary
+        combined_summary = '\n\n'.join(answers)
+
+        # Prepare the final prompt
+        final_prompt = f"{combined_summary}\n\nCan you write a cohesive, detailed literature review in the style of Nature Neuroscience with APA style citations at the end of key sentences and synthesizing across studies that specifically address {topic1}, {topic2}, and {topic3}. Make sure to emphasize common methods {main_topic} and go into as much detail as possible. Do not mention the studies in sentences, only in the citations, instead focus on the ideas, synthesizing across studies. Best sentences are those that appropriately include multiple citations and interspersed throughout the paragraph, with added bonus if multiple citations are within those interspersed sentences. Include title subsections where appropriate. The review should be extensive, covering all relevant aspects, detailed descriptions, and should be cohesive with smooth transitions between sections and paragraphs. Include subsections where appropriate. Again, make sure your paragraphs are synthesizing across studies with multiple citations for statements you make."
+
+        # Generate the final cohesive review
+        print('Generating final cohesive review with GPT4o API')
+        final_review = generate_text(final_prompt, max_tokens=4050)  # Increase max_tokens for longer response
+
+        # Add the final review to the document
+        document.add_heading(f"Final Cohesive Review for Sheet '{sheet_name}'", level=1)
+        document.add_paragraph(final_review)
 
     # Save the Word document
     document_path = os.path.join(dirname(excel_file_path), doc_file_name)
@@ -228,14 +281,31 @@ def main(excel_file_path=None):
     print(f"Clusters saved in the verbose Word document: {verbose_document_path}")
 
     # Open the combined Word document
-    os.system("start " + document_path)
+    try:
+        os.startfile(document_path)
+    except AttributeError:
+        # os.startfile is only available on Windows
+        print("Automatic opening of documents is only supported on Windows.")
+
     # Open the verbose Word document
-    os.system("start " + verbose_document_path)
+    try:
+        os.startfile(verbose_document_path)
+    except AttributeError:
+        print("Automatic opening of documents is only supported on Windows.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--excel_file_path", type=str, help="Path to the excel file", default=None)
     args = parser.parse_args()
     main(args.excel_file_path)
+
+
+
+
+   
+   
+
+   
+
 
    
