@@ -1,0 +1,26 @@
+name: ai_literature_review_env
+channels:
+  - apple
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - numpy
+  - pandas
+  - scikit-learn
+  - tensorflow
+  - pip
+  - tk
+  - fitz
+  - openpyxl
+  - requests
+  - python-docx
+  - pypdf2
+  - matplotlib
+  - frontend
+  - pip:
+    - openai
+    - tensorflow-hub
+    - lisc
+    - crossref-commons
+    - PyMuPDF

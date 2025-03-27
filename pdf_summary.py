@@ -21,7 +21,7 @@ from openpyxl.utils.dataframe import dataframe_to_rows
 import requests
 import time
 from api_key_checker import check_api_key
-from openai.error import RateLimitError,OpenAIError
+from openai import RateLimitError, OpenAIError
 
 
 # Set your OpenAI API Key here
